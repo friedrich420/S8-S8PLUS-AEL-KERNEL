@@ -203,12 +203,11 @@ get_entry(const void *base, unsigned int offset)
 
 /* All zeroes == unconditional rule. */
 /* Mildly perf critical (only if packet tracing is on) */
-static inline bool unconditional(const struct ip6t_entry *e)
+static inline bool unconditional(const struct ip6t_ip6 *ipv6)
 {
 	static const struct ip6t_ip6 uncond;
 
-	return e->target_offset == sizeof(struct ip6t_entry) &&
-	       memcmp(&e->ipv6, &uncond, sizeof(uncond)) == 0;
+	return memcmp(ipv6, &uncond, sizeof(uncond)) == 0;
 }
 
 static inline const struct xt_entry_target *
@@ -264,10 +263,11 @@ get_chainname_rulenum(const struct ip6t_entry *s, const struct ip6t_entry *e,
 	} else if (s == e) {
 		(*rulenum)++;
 
-		if (unconditional(s) &&
+		if (s->target_offset == sizeof(struct ip6t_entry) &&
 		    strcmp(t->target.u.kernel.target->name,
 			   XT_STANDARD_TARGET) == 0 &&
-		    t->verdict < 0) {
+		    t->verdict < 0 &&
+		    unconditional(&s->ipv6)) {
 			/* Tail of chains: STANDARD target (return/policy) */
 			*comment = *chainname == hookname
 				? comments[NF_IP6_TRACE_COMMENT_POLICY]
@@ -516,10 +516,11 @@ mark_source_chains(const struct xt_table_info *newinfo,
 			e->comefrom |= ((1 << hook) | (1 << NF_INET_NUMHOOKS));
 
 			/* Unconditional return/END. */
-			if ((unconditional(e) &&
+			if ((e->target_offset == sizeof(struct ip6t_entry) &&
 			     (strcmp(t->target.u.user.name,
 				     XT_STANDARD_TARGET) == 0) &&
-			     t->verdict < 0) || visited) {
+			     t->verdict < 0 &&
+			     unconditional(&e->ipv6)) || visited) {
 				unsigned int oldpos, size;
 
 				if ((strcmp(t->target.u.user.name,
@@ -1678,7 +1679,7 @@ compat_copy_entry_from_user(struct compat_ip6t_entry *e, void **dstptr,
 	*size += sizeof(struct ip6t_entry) - sizeof(struct compat_ip6t_entry);
 
 	xt_ematch_foreach(ematch, e) {
-		ret = xt_compat_match_from_user(ematch, dstptr, size);
+		//ret = xt_compat_match_from_user(ematch, dstptr, size);
 		if (ret != 0)
 			return ret;
 	}
@@ -1703,6 +1704,10 @@ static int compat_check_entry(struct ip6t_entry *e, struct net *net,
 	int ret = 0;
 	struct xt_mtchk_param mtpar;
 	struct xt_entry_match *ematch;
+
+	ret = check_entry(e, name);
+	if (ret)
+		return ret;
 
 	e->counters.pcnt = xt_percpu_counter_alloc();
 	if (IS_ERR_VALUE(e->counters.pcnt))
