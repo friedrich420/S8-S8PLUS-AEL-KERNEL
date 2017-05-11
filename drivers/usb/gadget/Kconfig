@@ -543,24 +543,10 @@ config USB_CONFIGFS_F_MIDI
 	  connections can then be made on the gadget system, using
 	  ALSA's aconnect utility etc.
 
-<<<<<<< HEAD
 config USB_CONFIGFS_F_HID
 	bool "HID function"
 	depends on USB_CONFIGFS
 	select USB_F_HID
-=======
-config USB_ANDROID_HID_GADGET
-	boolean "HID Gadget"
-	depends on USB_G_ANDROID
-	help
-	  The HID Gadget acts as both a USB Keyboard and USB Mouse
-	  device. It allows the android device to send key strokes
-	  or mouse movement commands to the connected host.
-
-config USB_LOCK_SUPPORT_FOR_MDM
-	boolean "Samsung USB_LOCK function for MDM"
-	depends on USB_G_ANDROID
->>>>>>> 0a6e6cf... HID gadget keyboard/mouse patch
 	help
 	  The HID function driver provides generic emulation of USB
 	  Human Interface Devices (HID).

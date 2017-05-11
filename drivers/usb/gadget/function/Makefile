@@ -65,8 +65,4 @@ usb_f_conn_gadget-y             := f_conn_gadget.o
 obj-$(CONFIG_USB_F_CONN_GADGET) += usb_f_conn_gadget.o
 
 obj-$(CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE)	+= multi_config.o
-<<<<<<< HEAD
 
-=======
-obj-$(CONFIG_USB_ANDROID_HID_GADGET)		+= f_hid.o
->>>>>>> 0a6e6cf... HID gadget keyboard/mouse patch
