@@ -511,7 +511,6 @@
 			cal-id = <ACPM_DVFS_CPUCL0>;
 			dm-type = <DM_CPU_CL1>;
 
-			max-freq = <2704000>;
 			min-freq = <741000>;
 
 			/* PM QoS Class ID*/
