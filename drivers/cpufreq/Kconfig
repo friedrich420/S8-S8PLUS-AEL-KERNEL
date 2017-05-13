@@ -196,6 +196,17 @@ config CPU_FREQ_DEFAULT_GOV_ELECTROACTIVE
 	  loading your cpufreq low-level hardware driver, using the
 	  'electroactive' governor for latency-sensitive workloads.
 
+config CPU_FREQ_DEFAULT_GOV_PSYCHOACTIVE
+	bool "psychoactive"
+	select CPU_FREQ_GOV_PSYCHOACTIVE
+	help
+	  Use the CPUFreq governor 'psychoactive' as default.
+
+config CPU_FREQ_DEFAULT_GOV_DANCEDANCE
+            bool "dancedance"
+            select CPU_FREQ_GOV_DANCEDANCE
+            help
+              Use the CPUFreq governor 'dancedance' as default.
 
 
 endchoice
@@ -352,6 +363,25 @@ config CPU_FREQ_GOV_CYAN
 config CPU_FREQ_GOV_ALUCARD
 	tristate "'alucard' cpufreq governor"
 	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_PSYCHOACTIVE
+  	tristate "'psychoactive' cpufreq policy governor"
+  	help
+  	  'psychoactive' - A more aggressive version of CAF 4.4 Interactive governor
+  
+  	  This governor attempts to reduce the latency of clock
+  	  increases so that the system is more responsive to
+	  interactive workloads.
+	  For details, take a look at linux/Documentation/cpu-freq.
+  
+  	  If in doubt, say N.
+
+config CPU_FREQ_GOV_DANCEDANCE
+           tristate "'dancedance' cpufreq governor"
+           depends on CPU_FREQ
+           help
+             dancedance' - a "smart" optimized governor!
+             If in doubt, say N.
 
 config CPU_FREQ_GOV_SCHEDUTIL
 	tristate "'schedutil' cpufreq policy governor"
