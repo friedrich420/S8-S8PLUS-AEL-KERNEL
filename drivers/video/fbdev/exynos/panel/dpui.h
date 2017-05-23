@@ -71,6 +71,10 @@ enum dpui_key {
 	DPUI_KEY_PNVLO3E,	/* panel VLOUT3 error count */
 	DPUI_KEY_PNESDE,	/* panel ESD error count */
 	DPUI_KEY_PNSDRE,	/* panel OTP loading error count */
+#ifdef CONFIG_SUPPORT_POC_FLASH
+	DPUI_KEY_PNPOCT,	/* panel POC try count */
+	DPUI_KEY_PNPOCF,	/* panel POC fail count */
+#endif
 	MAX_DPUI_KEY,
 };
 
@@ -129,3 +133,4 @@ static inline int get_dpui_u32_field(enum dpui_key key, u32 *value) { return 0; 
 static inline int inc_dpui_u32_field(enum dpui_key key, u32 value) { return 0; }
 #endif /* CONFIG_DISPLAY_USE_INFO */
 #endif /* __DPUI_H__ */
+
