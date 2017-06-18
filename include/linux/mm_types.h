@@ -361,13 +361,7 @@ struct vm_area_struct {
 #ifdef CONFIG_NUMA
 	struct mempolicy *vm_policy;	/* NUMA policy for the VMA */
 #endif
-<<<<<<< HEAD
 	struct vm_userfaultfd_ctx vm_userfaultfd_ctx;
-=======
-#ifdef CONFIG_UKSM
-	struct vma_slot *uksm_vma_slot;
-#endif
->>>>>>> c91e5a2... UKSM - Ultra Kernel Same-page Merging
 };
 
 struct core_thread {
