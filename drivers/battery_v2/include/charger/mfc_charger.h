@@ -616,6 +616,7 @@ struct mfc_charger_platform_data {
 	int irq_wpc_det;
 	int wpc_int;
 	int mst_pwr_en;
+	int wpc_en;
 	int irq_wpc_int;
 	int cs100_status;
 	int vout_status;
@@ -699,7 +700,7 @@ struct mfc_charger_data {
 	int is_mst_on; /* mst */
 	int chip_id;
 	int fw_cmd;
-	int vout_step;
+	int vout_mode;
 	int mst_off_lock;
 	bool is_otg_on;
 	int led_cover;
