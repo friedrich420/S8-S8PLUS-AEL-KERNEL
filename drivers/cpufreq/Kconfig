@@ -234,6 +234,12 @@ config CPU_FREQ_DEFAULT_GOV_IMPULSE
 		loading your cpufreq low-level hardware driver, using the
 		'impulse' governor for latency-sensitive workloads.
 
+config CPU_FREQ_DEFAULT_GOV_ZENX
+	bool "zenx"
+	select CPU_FREQ_GOV_ZENX
+	help
+	  Use the CPUFreq governor 'zenx' as default
+
 
 endchoice
 
@@ -426,6 +432,14 @@ config CPU_FREQ_GOV_IMPULSE
 	tristate "'impulse' cpufreq policy governor"
 	help
 		'impulse' - This driver adds a dynamic cpufreq policy governor
+		designed for latency-sensitive workloads.
+
+		If in doubt, say N.
+
+config CPU_FREQ_GOV_ZENX
+	tristate "'zenx' cpufreq policy governor"
+	help
+		'zenx' - This driver adds a dynamic cpufreq policy governor
 		designed for latency-sensitive workloads.
 
 		If in doubt, say N.
