@@ -851,15 +851,13 @@ out_unlock:
 	kbase_gpu_vm_unlock(katom->kctx);
 
 out_cleanup:
-	kfree(buffers);
-	kfree(user_buffers);
-
 	/* Frees allocated memory for kbase_debug_copy_job struct, including
 	 * members, and sets jc to 0 */
-	kbase_debug_copy_finish(katom);
+	kbase_debug_copy_finish(katom);	
+	kfree(user_buffers);
+
 	return ret;
 }
-
 static void kbase_mem_copy_from_extres_page(struct kbase_context *kctx,
 		void *extres_page, struct page **pages, unsigned int nr_pages,
 		unsigned int *target_page_nr, size_t offset, size_t *to_copy)
