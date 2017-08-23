@@ -55,6 +55,7 @@ const char USB_HW_Param_Print[USB_CCIC_HW_PARAM_MAX][MAX_HWPARAM_STRING] = {
 	{"CC_DEX"},
 	{"CC_WTIME"},
 	{"CC_WVBUS"},
+	{"CC_CSHORT"},
 	{"CC_VER"},
 };
 
