@@ -352,6 +352,7 @@ static ssize_t debug_smclog_read(struct file *file, char __user *user_buf,
 static const struct file_operations mc_debug_smclog_ops = {
 	.read = debug_smclog_read,
 	.llseek = default_llseek,
+	.open = debug_generic_open,
 	.release = debug_generic_release,
 };
 
@@ -715,3 +716,4 @@ void nq_exit(void)
 		kfree(l_ctx.dump.buf);
 	free_pages((unsigned long)l_ctx.base, l_ctx.order);
 }
+
