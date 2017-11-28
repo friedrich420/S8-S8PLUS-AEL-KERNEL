@@ -494,8 +494,7 @@ enum {
 #ifdef BCMSDIO
 #define TCPACK_SUP_DEFAULT	TCPACK_SUP_DELAYTX
 #elif defined(BCMPCIE)
-#define TCPACK_SUP_DEFAULT	TCPACK_SUP_HOLD
-#else
+
 #define TCPACK_SUP_DEFAULT	TCPACK_SUP_OFF
 #endif /* BCMSDIO */
 #endif /* ARGOS_CPU_SCHEDULER */
@@ -2570,3 +2569,4 @@ wake_counts_t* dhd_get_wakecount(dhd_pub_t *dhdp);
 extern uint32 dhd_get_random_number(void);
 #endif /* BCM_ASLR_HEAP */
 #endif /* _dhd_h_ */
+

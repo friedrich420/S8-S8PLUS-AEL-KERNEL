@@ -160,9 +160,7 @@
 #define DPC_CPUCORE 4
 #define RXF_CPUCORE 5
 #define TASKLET_CPUCORE 5
-#ifndef DHD_LB_IRQSET
 #define ARGOS_CPU_SCHEDULER
-#endif /* DHD_LB_IRQSET */
 #define ARGOS_RPS_CPU_CTL
 
 #ifdef CONFIG_SOC_EXYNOS8895
@@ -355,3 +353,4 @@
 #endif /* CONFIG_MACH_KONA */
 
 #endif /* _dhd_sec_feature_h_ */
+

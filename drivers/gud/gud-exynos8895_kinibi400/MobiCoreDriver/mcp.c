@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2016 TRUSTONIC LIMITED
+ * Copyright (c) 2013-2017 TRUSTONIC LIMITED
  * All Rights Reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,10 @@
 #include <linux/freezer.h>
 #include <asm/barrier.h>
 #include <linux/irq.h>
+#include <linux/version.h>
+#if KERNEL_VERSION(4, 11, 0) <= LINUX_VERSION_CODE
+#include <linux/sched/clock.h>	/* local_clock */
+#endif
 
 #include "public/mc_user.h"
 #include "public/mc_admin.h"
@@ -46,7 +50,7 @@
 /* respond timeout for MCP notification, in secs */
 #define MCP_TIMEOUT		10
 /* ExySp */
-#define MCP_RETRIES		2
+#define MCP_RETRIES		5
 #define MCP_NF_QUEUE_SZ		8
 
 static struct {
@@ -63,7 +67,7 @@ static struct {
 	/* Wait timeout */
 	u32			timeout;
 	/* Log of last MCP commands */
-#define MCP_LOG_SIZE 256
+#define MCP_LOG_SIZE 1024
 	struct mutex		last_mcp_cmds_mutex; /* Log protection */
 	struct mcp_command_info {
 		u64			cpu_clk;	/* Kernel time */
@@ -254,8 +258,8 @@ static inline int wait_mcp_notification(void)
 		int ret;
 
 		/*
-		* Wait non-interruptible to keep MCP synchronised even if caller
-		* is interrupted by signal.
+		 * Wait non-interruptible to keep MCP synchronised even if
+		 * caller is interrupted by signal.
 		*/
 		ret = wait_for_completion_timeout(&l_ctx.complete, timeout);
 		if (ret > 0)
@@ -516,19 +520,6 @@ int mcp_open_session(struct mcp_session *session,
 	header = (union mclf_header *)(obj->data + obj->header_length);
 	cmd.cmd_open.uuid = header->mclf_header_v2.uuid;
 	cmd.cmd_open.is_gpta = nq_session_is_gp(&session->nq_session);
-
-	/* Blacklisted Trustlets */
-	if (((cmd.cmd_open.uuid.value[9] == 0xd)
-	    && (cmd.cmd_open.uuid.value[15] == 0x0)
-	    && (cmd.cmd_open.uuid.value[16] == 0xa))
-	|| ((cmd.cmd_open.uuid.value[9] == 0xd)
-	    && (cmd.cmd_open.uuid.value[15] == 0x0)
-	    && (cmd.cmd_open.uuid.value[16] == 0x4))
-	|| ((cmd.cmd_open.uuid.value[9] == 0x0)
-	    && (cmd.cmd_open.uuid.value[15] == 0x1)
-	    && (cmd.cmd_open.uuid.value[16] == 0x3)))
-		return -EINVAL;
-
 	/* Reset unexpected notification */
 	mutex_lock(&local_mutex);
 	l_ctx.unexp_notif.session_id = SID_MCP;	/* Cannot be */
